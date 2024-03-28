@@ -1,0 +1,35 @@
+# This workflow installs Python dependencies, run lint checks and unit tests
+# Info: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python App lint check and unit test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.12' ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: python -m pip install --user pytest pytest-cov
+
+      - name: Run unit tests
+        run: pytest test/ --cov --cov-report=html --cov-fail-under=80
+
+      - name: Upload Test Coverage Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: treescriptify-cov
+          path: htmlcov/
