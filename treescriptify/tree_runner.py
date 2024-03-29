@@ -9,26 +9,27 @@ def get_tree_json(data: InputData) -> str:
     """Obtain the Tree Information as a JSON string.
     """
     result = subprocess.run(
-        args=['tree', '-J', '-i', '-x', '--noreport'] + _check_arguments(data),
+        args='tree -Jix --noreport ' + _check_arguments(data),
         capture_output=True,
         text=True,
-        shell=False,
+        shell=True,
+        timeout=3
     )
     output = result.stdout
     #error = result.stderr
     return output
 
 
-def _check_arguments(data: InputData) -> list[str]:
+def _check_arguments(data: InputData) -> str:
     """Check the Input Data and map flags to tree command.
     """
     extras = []
     if data.directories_only:
-        extras += '-d'
+        extras.append('-d ')
     if data.prune_dirs:
-        extras += '--prune'
+        extras += ['--prune ']
     if data.include_hidden:
-        extras += '-a'
+        extras += ['-a ']
     if data.git_ignore:
-        extras += '--gitignore'
-    return extras
+        extras.append('--gitignore ')
+    return ' '.join(extras)
