@@ -28,14 +28,14 @@ def _define_arguments() -> ArgumentParser:
     )
     parser.add_argument(
         '-a',
-        '--hide'
+        '--hide',
         action='store_false',
         default=True,
         help='Hidden files are shown by default. This flag hides them.'
     )
     parser.add_argument(
         '-d',
-        '--directories'
+        '--directories',
         action='store_true',
         default=False,
         help='Flag to show only the directories.'
