@@ -3,7 +3,7 @@
 import pytest
 
 from input.input_data import InputData
-from treescriptify.tree_runner import get_tree_json
+from treescriptify.tree_runner import _check_arguments, get_tree_json
 
 
 def test_get_tree_json_():
@@ -15,9 +15,13 @@ def test_get_tree_json_():
 @pytest.mark.parametrize(
     'test_input,expected',
     [
-        ('', ''),
+        (InputData(include_hidden=False, git_ignore=False), ''),
+        (InputData(git_ignore=False), '-a'),
+        (InputData(), '-a --gitignore'),
+        (InputData(directories_only=True), '-d -a --gitignore'),
+        (InputData(prune_dirs=True), '--prune -a --gitignore'),
+        (InputData(directories_only=True, prune_dirs=True), '-d --prune -a --gitignore'),
     ]
 )
-def test_param(test_input, expected):
-	#assert get_tree_json(test_input) == expected
-	pass
+def test_check_arguments(test_input, expected):
+	assert _check_arguments(test_input) == expected
