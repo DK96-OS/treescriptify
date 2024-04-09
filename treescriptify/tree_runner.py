@@ -15,9 +15,8 @@ def get_tree_json(data: InputData) -> str:
         shell=True,
         timeout=3
     )
-    output = result.stdout
     #error = result.stderr
-    return output
+    return result.stdout
 
 
 def _check_arguments(data: InputData) -> str:
@@ -25,11 +24,11 @@ def _check_arguments(data: InputData) -> str:
     """
     extras = []
     if data.directories_only:
-        extras.append('-d ')
+        extras.append('-d')
     if data.prune_dirs:
-        extras += ['--prune ']
+        extras += ['--prune']
     if data.include_hidden:
-        extras += ['-a ']
+        extras += ['-a']
     if data.git_ignore:
-        extras.append('--gitignore ')
+        extras.append('--gitignore')
     return ' '.join(extras)

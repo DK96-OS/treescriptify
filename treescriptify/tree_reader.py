@@ -9,7 +9,7 @@ from treescriptify.tree_node_data import TreeNodeData
 def generate_from_json(json_string: str) -> Generator[TreeNodeData, None, None]:
     """Read the JSON string and generate TreeNodeData for all elements.
     """
-    full_json = json.loads(json_string)[0]
+    full_json = json.loads(json_string)
     for i in full_json['contents']:
         for node in _process_node(i, 0):
             yield node

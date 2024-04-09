@@ -11,10 +11,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
+      max-parallel: 3
       matrix:
-        python-version: [ '3.12' ]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: [ '3.11', '3.12' ]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -23,13 +25,15 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Dependencies
-        run: python -m pip install --user pytest pytest-cov
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
 
       - name: Run unit tests
-        run: pytest test/ --cov --cov-report=html --cov-fail-under=75
+        run: pytest test/ --cov --cov-report=html --cov-fail-under=95
 
       - name: Upload Test Coverage Reports
         uses: actions/upload-artifact@v4
         with:
-          name: treescriptify-cov
+          name: treescriptify-cov-${{ matrix.os }}-${{ matrix.python-version }}
           path: htmlcov/
