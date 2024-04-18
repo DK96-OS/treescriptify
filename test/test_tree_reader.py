@@ -2,8 +2,8 @@
 """
 import pytest
 
-from treescriptify.tree_node_data import TreeNodeData
-from treescriptify.tree_reader import generate_from_json
+from treescriptify_this.tree_node_data import TreeNodeData
+from treescriptify_this.tree_reader import generate_from_json
 
 
 def wrap_root_dir(inner_dirs: str) -> str:

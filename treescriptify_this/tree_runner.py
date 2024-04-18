@@ -2,7 +2,7 @@
 """
 import subprocess
 
-from input.input_data import InputData
+from treescriptify_this.input_data import InputData
 
 
 def get_tree_json(data: InputData) -> str:

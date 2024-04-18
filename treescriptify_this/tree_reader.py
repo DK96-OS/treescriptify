@@ -3,7 +3,7 @@
 import json
 from typing import Generator
 
-from treescriptify.tree_node_data import TreeNodeData
+from .tree_node_data import TreeNodeData
 
 
 def generate_from_json(json_string: str) -> Generator[TreeNodeData, None, None]:
