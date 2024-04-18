@@ -1,10 +1,10 @@
-# TreeScriptify
-Get Started fast with a TreeScript generated from an existing directory.
+# Treescriptify-This
+Get Started fast with TreeScript generated from an existing directory.
 
 ## How To Use
-Run `python <path-to-tsfy-dir>` command in a directory to treescript-ify.
+Run the main script in a directory to treescript-ify it.
 
-1. You can pipe program output to a file, or
+1. Pipe program output to a file, or
 2. Display it on-screen for copy-paste workflow integration.
 
 ## Program Architecture
