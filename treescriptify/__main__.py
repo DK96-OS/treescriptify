@@ -3,8 +3,8 @@
 """
 from sys import argv
 
-from input.argument_parser import parse_args
-from treescriptify import tsfy
+from .argument_parser import parse_args
+from . import tsfy
 
 
 def main():

@@ -3,7 +3,7 @@
 import pytest
 import subprocess
 
-from input.input_data import InputData
+from treescriptify.input_data import InputData
 from treescriptify.tree_runner import _check_arguments, get_tree_json
 
 
