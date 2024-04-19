@@ -40,6 +40,18 @@ jobs:
             ./dist/*.tar.gz
             ./dist/*.whl
 
+      - name: Cleanup Dist Directory after signing
+        run: |
+          cd dist
+          echo "Removing files that do not match '*.tar.gz' or '*.whl'"
+          for file in *; do
+            if [[ ! "$file" == *".tar.gz" ]] && [[ ! "$file" == *".whl" ]]; then
+              echo "Removing: $file"
+              rm "$file"
+            fi
+          done
+          cd ../
+
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
