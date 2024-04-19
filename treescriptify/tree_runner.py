@@ -13,7 +13,7 @@ def get_tree_json(data: InputData) -> str:
         capture_output=True,
         text=True,
         shell=True,
-        timeout=3
+        timeout=5
     )
     #error = result.stderr
     return result.stdout
