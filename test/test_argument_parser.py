@@ -2,8 +2,8 @@
 """
 import pytest
 
-from treescriptify_this.input_data import InputData
-from treescriptify_this.argument_parser import parse_args
+from treescriptify.input_data import InputData
+from treescriptify.argument_parser import parse_args
 
 
 @pytest.mark.parametrize(

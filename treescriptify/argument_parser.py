@@ -2,7 +2,7 @@
 """
 from argparse import ArgumentParser
 
-from treescriptify_this.input_data import InputData
+from treescriptify.input_data import InputData
 
 
 def parse_args(arguments: list[str]) -> InputData:

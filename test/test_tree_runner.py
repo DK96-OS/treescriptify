@@ -3,8 +3,8 @@
 import pytest
 import subprocess
 
-from treescriptify_this.input_data import InputData
-from treescriptify_this.tree_runner import _check_arguments, get_tree_json
+from treescriptify.input_data import InputData
+from treescriptify.tree_runner import _check_arguments, get_tree_json
 
 
 def get_cmd_result(*args, **kwargs):
