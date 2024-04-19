@@ -7,7 +7,7 @@ from treescriptify.tree_reader import generate_from_json
 
 
 def wrap_root_dir(inner_dirs: str) -> str:
-	return '{"type":"directory", "name":".", "contents":[' + inner_dirs + ']}'
+	return '[{"type":"directory", "name":".", "contents":[' + inner_dirs + ']}]'
 
 
 def get_src_dir() -> str:
