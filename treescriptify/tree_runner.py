@@ -9,7 +9,7 @@ def get_tree_json(data: InputData) -> str:
     """Obtain the Tree Information as a JSON string.
     """
     result = subprocess.run(
-        args='tree -Jix --noreport ' + _check_arguments(data),
+        args='tree -Ji --noreport ' + _check_arguments(data),
         capture_output=True,
         text=True,
         shell=True,
