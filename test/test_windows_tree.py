@@ -12,7 +12,8 @@ DEFAULT_INPUT = InputData()
 EXCLUDE_HIDDEN_INPUT = InputData(include_hidden=False)
 DIR_ONLY_INPUT = InputData(directories_only=True)
 PRUNE_DIR_INPUT = InputData(prune_dirs=True)
-DIR_ONLY_PRUNE_INPUT = InputData(include_hidden=False, directories_only=True, prune_dirs=True)
+DIR_ONLY_PRUNE_INPUT = InputData(directories_only=True, prune_dirs=True)
+EXCLUDE_HIDDEN_WITH_DIR_ONLY_PRUNE = InputData(include_hidden=False, directories_only=True, prune_dirs=True)
 
 
 # BASIC_TREE
@@ -177,10 +178,15 @@ def test_win_tree_dir_only_prune_input_nested_tree_returns_data(mock_nested_tree
         TreeNodeData(1, True, 'main'),
     ]
 
-        
+
 def test_win_tree_dir_only_prune_input_hidden_tree_returns_data(mock_hidden_tree):
     result = [x for x in win_tree(DIR_ONLY_PRUNE_INPUT, mock_hidden_tree)]
     assert result == [
         TreeNodeData(0, True, '.github'),
         TreeNodeData(1, True, 'workflows'),
     ]
+
+
+def test_win_tree_dir_only_prune_input_hidden_tree_returns_data(mock_hidden_tree):
+    result = [x for x in win_tree(EXCLUDE_HIDDEN_WITH_DIR_ONLY_PRUNE, mock_hidden_tree)]
+    assert result == []
