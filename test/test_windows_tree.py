@@ -4,7 +4,8 @@ from pathlib import Path
 import pytest
 
 from treescriptify.input_data import InputData
-from treescriptify.windows_tree import _gen_tree
+from treescriptify.tree_node_data import TreeNodeData
+from treescriptify.windows_tree import win_tree
 
 
 DEFAULT_INPUT = InputData()
@@ -14,207 +15,172 @@ PRUNE_DIR_INPUT = InputData(prune_dirs=True)
 DIR_ONLY_PRUNE_INPUT = InputData(include_hidden=False, directories_only=True, prune_dirs=True)
 
 
-BASIC_TREE = ['src', 'src/data.txt']
+# BASIC_TREE
 #   src/
 #     data.txt
 
-NESTED_DIR = ['src', 'src/data.txt', 'src/main', 'src/main/SourceClass.java']
+# NESTED_DIR
 #   src/
-#     data.txt
 #     main/
 #       SourceClass.java
 
-HIDDEN_DIRS = ['.github', '.github/dependabot.yml', '.github/workflows', '.github/workflows/ci.yml', '.hidden.txt', 'src', 'src/data.txt']
+# HIDDEN_DIRS
 #   .github/
 #     dependabot.yml
 #     workflows/
 #       ci.yml
 #   .hidden.txt
-#   src/
-#     data.txt
 
 
-def mock_iterdir(contents: list[str]):
-    for c in contents:
-        yield Path(c)
+@pytest.fixture
+def mock_basic_tree(tmp_path):
+    src_dir = tmp_path / 'src'  
+    src_dir.mkdir()
+    (src_dir / 'data.txt').touch()
+    return Path(str(tmp_path))
 
 
-def test_gen_tree_default_input_basic_tree_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(BASIC_TREE))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(DEFAULT_INPUT, './'))
-        print('\n'.join(result))
+@pytest.fixture
+def mock_nested_tree(tmp_path):
+    src_dir = tmp_path / 'src'
+    src_dir.mkdir()
+    main_dir = src_dir / 'main'
+    main_dir.mkdir()
+    (main_dir / 'SourceClass.java').touch()
+    return Path(str(tmp_path))
+
+
+@pytest.fixture
+def mock_hidden_tree(tmp_path):
+    github_dir = tmp_path / '.github'
+    github_dir.mkdir()
+    (github_dir / 'dependabot.yml').touch()
+    workflows_dir = github_dir / 'workflows'
+    workflows_dir.mkdir()
+    (workflows_dir / 'ci.yml').touch()
+    (tmp_path / '.hidden.txt').touch()
+    return Path(str(tmp_path))
+
+
+def test_win_tree_default_input_basic_tree_returns_data(mock_basic_tree):
+    result = [x for x in win_tree(DEFAULT_INPUT, mock_basic_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+        TreeNodeData(1, False, 'data.txt'),
+    ]
         
 
-def test_gen_tree_default_input_nested_dir_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(NESTED_DIR))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(DEFAULT_INPUT, './'))
-        print('\n'.join(result))
+def test_win_tree_default_input_nested_tree_returns_data(mock_nested_tree):
+    result = [x for x in win_tree(DEFAULT_INPUT, mock_nested_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+        TreeNodeData(1, True, 'main'),
+        TreeNodeData(2, False, 'SourceClass.java'),
+    ]
 
         
-def test_gen_tree_default_input_hidden_dirs_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(HIDDEN_DIRS))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(DEFAULT_INPUT, './'))
-        print('\n'.join(result))
+def test_win_tree_default_input_hidden_tree_returns_data(mock_hidden_tree):
+    result = [x for x in win_tree(DEFAULT_INPUT, mock_hidden_tree)]
+    assert result == [
+        TreeNodeData(0, True, '.github'),
+        TreeNodeData(1, False, 'dependabot.yml'),
+        TreeNodeData(1, True, 'workflows'),
+        TreeNodeData(2, False, 'ci.yml'),
+        TreeNodeData(0, False, '.hidden.txt'),
+    ]
 
-        
-def test_gen_tree_exclude_hidden_input_basic_tree_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(BASIC_TREE))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(EXCLUDE_HIDDEN_INPUT, './'))
-        print('\n'.join(result))
+
+def test_win_tree_exclude_hidden_input_basic_tree_returns_data(mock_basic_tree):
+    result = [x for x in win_tree(EXCLUDE_HIDDEN_INPUT, mock_basic_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+        TreeNodeData(1, False, 'data.txt'),
+    ]
         
 
-def test_gen_tree_exclude_hidden_input_nested_dir_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(NESTED_DIR))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(EXCLUDE_HIDDEN_INPUT, './'))
-        print('\n'.join(result))
+def test_win_tree_exclude_hidden_input_nested_tree_returns_data(mock_nested_tree):
+    result = [x for x in win_tree(EXCLUDE_HIDDEN_INPUT, mock_nested_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+        TreeNodeData(1, True, 'main'),
+        TreeNodeData(2, False, 'SourceClass.java'),
+    ]
 
         
-def test_gen_tree_exclude_hidden_input_hidden_dirs_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(HIDDEN_DIRS))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(EXCLUDE_HIDDEN_INPUT, './'))
-        print('\n'.join(result))
+def test_win_tree_exclude_hidden_input_hidden_tree_returns_data(mock_hidden_tree):
+    result = [x for x in win_tree(EXCLUDE_HIDDEN_INPUT, mock_hidden_tree)]
+    assert result == []
 
 
-def test_gen_tree_dir_only_input_basic_tree_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(BASIC_TREE))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(DIR_ONLY_INPUT, './'))
-        print('\n'.join(result))
+def test_win_tree_dir_only_input_basic_tree_returns_data(mock_basic_tree):
+    result = [x for x in win_tree(DIR_ONLY_INPUT, mock_basic_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+    ]
+
+
+def test_win_tree_dir_only_input_nested_tree_returns_data(mock_nested_tree):
+    result = [x for x in win_tree(DIR_ONLY_INPUT, mock_nested_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+        TreeNodeData(1, True, 'main'),
+    ]
+
+    
+def test_win_tree_dir_only_input_hidden_tree_returns_data(mock_hidden_tree):
+    result = [x for x in iter(win_tree(DIR_ONLY_INPUT, mock_hidden_tree))]
+    assert result == [
+        TreeNodeData(0, True, '.github'),
+        TreeNodeData(1, True, 'workflows'),
+    ]
+
+
+def test_win_tree_prune_dir_input_basic_tree_returns_data(mock_basic_tree):
+    result = [x for x in win_tree(PRUNE_DIR_INPUT, mock_basic_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+        TreeNodeData(1, False, 'data.txt'),
+    ]
         
 
-def test_gen_tree_dir_only_input_nested_dir_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(NESTED_DIR))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(DIR_ONLY_INPUT, './'))
-        print('\n'.join(result))
+def test_win_tree_prune_dir_input_nested_tree_returns_data(mock_nested_tree):    
+    result = [x for x in win_tree(PRUNE_DIR_INPUT, mock_nested_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+        TreeNodeData(1, True, 'main'),
+        TreeNodeData(2, False, 'SourceClass.java'),
+    ]
 
         
-def test_gen_tree_dir_only_input_hidden_dirs_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(HIDDEN_DIRS))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(DIR_ONLY_INPUT, './'))
-        print('\n'.join(result))
+def test_win_tree_prune_dir_input_hidden_tree_returns_data(mock_hidden_tree):
+    result = [x for x in win_tree(PRUNE_DIR_INPUT, mock_hidden_tree)]
+    assert result == [
+        TreeNodeData(0, True, '.github'),
+        TreeNodeData(1, False, 'dependabot.yml'),
+        TreeNodeData(1, True, 'workflows'),
+        TreeNodeData(2, False, 'ci.yml'),
+        TreeNodeData(0, False, '.hidden.txt'),
+    ]
 
 
-def test_gen_tree_prune_dir_input_basic_tree_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(BASIC_TREE))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(PRUNE_DIR_INPUT, './'))
-        print('\n'.join(result))
-        
+def test_win_tree_dir_only_prune_input_basic_tree_returns_data(mock_basic_tree):
+    result = [x for x in win_tree(DIR_ONLY_PRUNE_INPUT, mock_basic_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+    ]
 
-def test_gen_tree_prune_dir_input_nested_dir_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(NESTED_DIR))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(PRUNE_DIR_INPUT, './'))
-        print('\n'.join(result))
+
+def test_win_tree_dir_only_prune_input_nested_tree_returns_data(mock_nested_tree):
+    result = [x for x in win_tree(DIR_ONLY_PRUNE_INPUT, mock_nested_tree)]
+    assert result == [
+        TreeNodeData(0, True, 'src'),
+        TreeNodeData(1, True, 'main'),
+    ]
 
         
-def test_gen_tree_prune_dir_input_hidden_dirs_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(HIDDEN_DIRS))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(PRUNE_DIR_INPUT, './'))
-        print('\n'.join(result))
-
-
-def test_gen_tree_dir_only_prune_input_basic_tree_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(BASIC_TREE))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(DIR_ONLY_PRUNE_INPUT, './'))
-        print('\n'.join(result))
-        
-
-def test_gen_tree_dir_only_prune_input_nested_dir_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(NESTED_DIR))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(DIR_ONLY_PRUNE_INPUT, './'))
-        print('\n'.join(result))
-
-        
-def test_gen_tree_dir_only_prune_input_hidden_dirs_returns_data():
-    with pytest.MonkeyPatch().context() as mock:
-        mock.setattr(Path, 'iterdir', lambda: mock_iterdir(HIDDEN_DIRS))
-        mock.setattr(Path, 'exists', lambda: True)
-        mock.setattr(Path, 'name', lambda: True)
-        #
-        mock.setattr(Path, 'is_dir', lambda: True)
-        #
-        result = list(_gen_tree(DIR_ONLY_PRUNE_INPUT, './'))
-        print('\n'.join(result))
-
+def test_win_tree_dir_only_prune_input_hidden_tree_returns_data(mock_hidden_tree):
+    result = [x for x in win_tree(DIR_ONLY_PRUNE_INPUT, mock_hidden_tree)]
+    assert result == [
+        TreeNodeData(0, True, '.github'),
+        TreeNodeData(1, True, 'workflows'),
+    ]
