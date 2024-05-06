@@ -8,20 +8,26 @@ from .input_data import InputData
 from .tree_node_data import TreeNodeData
 
 
-def win_tree(data: InputData) -> Generator[TreeNodeData, None, None]:
+def win_tree(
+    data: InputData,
+    path: Path = Path('./'),
+) -> Generator[TreeNodeData, None, None]:
     """Generate Tree Node Data for all files and directories in the given path.
 
     Parameters:
+    - data (InputData): The
     - path (str): The root path to run tree in.
 
     Return:
     Generator[TreeNodeData]
     """
-    try:
-        tree_root = Path('./')
-    except:
-        exit('Failed to initiate Path')
-    return _gen_tree(data, tree_root)
+    if data.directories_only:
+        if data.prune_dirs:
+            yield from _dirs_only_prune(data, path)
+        else:
+            yield from _dirs_only(data, path)
+    else:
+        yield from _gen_tree(data, path)
 
 
 def _gen_tree(
@@ -36,13 +42,45 @@ def _gen_tree(
         if not data.include_hidden and entry.name.startswith('.'):
             continue
         is_directory = entry.is_dir()
-        if data.directories_only:
-            if is_directory:
-                # Check if prune_dirs is True and directory is empty 
-                if not data.prune_dirs or any(_gen_tree(data, entry, depth + 1)):
-                    yield TreeNodeData(depth, is_directory, entry.name)
-        else:
+        yield TreeNodeData(depth, is_directory, entry.name)
+        if is_directory:
+            yield from _gen_tree(data, entry, depth + 1)
+
+
+def _dirs_only(
+    data: InputData,
+    path: Path,
+    depth: int = 0
+) -> Generator[TreeNodeData, None, None]:
+    """
+    """
+    for entry in path.iterdir():
+        if not data.include_hidden and entry.name.startswith('.'):
+            continue
+        if (is_directory := entry.is_dir()):
             yield TreeNodeData(depth, is_directory, entry.name)
-            if is_directory:
-                yield from _gen_tree(data, entry, depth + 1)
+            yield from _dirs_only(data, entry, depth + 1)
+        else:
+            #print(f"Ignoring File {entry.name}")
+            pass
+
+
+def _dirs_only_prune(
+    data: InputData,
+    path: Path,
+    depth: int = 0
+) -> Generator[TreeNodeData, None, None]:
+    """
+    """
+    for entry in path.iterdir():
+        if not data.include_hidden and entry.name.startswith('.'):
+            continue
+        if (is_directory := entry.is_dir()):
+            # Check if directory is empty
+            if any(_dirs_only_prune(data, entry, depth + 1)):
+                yield TreeNodeData(depth, is_directory, entry.name)
+                yield from _dirs_only_prune(data, entry, depth + 1)
+        else:
+            #print(f"Ignoring File {entry.name}")
+            pass
 
