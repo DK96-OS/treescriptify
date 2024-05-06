@@ -1,7 +1,6 @@
 """Python implementation of the Tree Command, for windows OS.
 """
 from pathlib import Path
-from sys import exit
 from typing import Generator
 
 from .input_data import InputData
@@ -52,7 +51,7 @@ def _dirs_only(
     path: Path,
     depth: int = 0
 ) -> Generator[TreeNodeData, None, None]:
-    """
+    """Only Yields Directories.
     """
     for entry in path.iterdir():
         if not data.include_hidden and entry.name.startswith('.'):
@@ -70,14 +69,14 @@ def _dirs_only_prune(
     path: Path,
     depth: int = 0
 ) -> Generator[TreeNodeData, None, None]:
-    """
+    """Only Yields Directories, after pruning.
     """
     for entry in path.iterdir():
         if not data.include_hidden and entry.name.startswith('.'):
             continue
         if (is_directory := entry.is_dir()):
             # Check if directory is empty
-            if any(_dirs_only_prune(data, entry, depth + 1)):
+            if any(entry.iterdir()):
                 yield TreeNodeData(depth, is_directory, entry.name)
                 yield from _dirs_only_prune(data, entry, depth + 1)
         else:
