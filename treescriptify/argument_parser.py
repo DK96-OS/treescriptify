@@ -10,7 +10,7 @@ def parse_args(arguments: list[str]) -> InputData:
     """
     try:
         args = _define_arguments().parse_args(arguments)
-    except SystemExit as e:
+    except SystemExit:
         exit("Unable to Parse Arguments.")
     return InputData(
         include_hidden=args.hide,
