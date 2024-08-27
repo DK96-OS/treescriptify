@@ -224,6 +224,6 @@ def test_win_tree_dir_only_prune_input_hidden_tree_returns_data(mock_hidden_tree
     ]
 
 
-def test_win_tree_dir_only_prune_input_hidden_tree_returns_data(mock_hidden_tree):
+def test_win_tree_exclude_hidden_dir_only_prune_input_hidden_tree_returns_empty(mock_hidden_tree):
     result = [x for x in win_tree(EXCLUDE_HIDDEN_WITH_DIR_ONLY_PRUNE, mock_hidden_tree)]
     assert result == []
