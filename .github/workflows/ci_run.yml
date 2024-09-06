@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [ '3.11', '3.12' ]
+        python-version: [ '3.11', '3.12', '3.13.0-rc.1' ]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -24,6 +24,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'pip'
 
       - name: Install Dependencies
         run: |
@@ -35,6 +36,7 @@ jobs:
 
       - name: Upload Test Coverage Reports
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: treescriptify-cov-${{ matrix.os }}-${{ matrix.python-version }}
           path: htmlcov/
