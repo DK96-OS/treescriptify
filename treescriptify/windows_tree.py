@@ -11,14 +11,14 @@ def win_tree(
     data: InputData,
     path: Path = Path('./'),
 ) -> Generator[TreeNodeData, None, None]:
-    """Generate Tree Node Data for all files and directories in the given path.
+    """ Generate Tree Node Data for all files and directories in the given path.
 
-    Parameters:
-    - data (InputData): The
-    - path (str): The root path to run tree in.
+**Parameters:
+ - data (InputData): The
+ - path (str): The root path to run tree in.
 
-    Return:
-    Generator[TreeNodeData]
+**Yields:**
+ TreeNodeData
     """
     if data.directories_only:
         if data.prune_dirs:
@@ -36,7 +36,7 @@ def _gen_tree(
 ) -> Generator[TreeNodeData, None, None]:
     """Mimic the Tree command.
     """
-    for entry in path.glob('*'):
+    for entry in sorted(path.glob('*')):
         # Check Hidden Files option
         if not data.include_hidden and entry.name.startswith('.'):
             continue
@@ -53,7 +53,7 @@ def _dirs_only(
 ) -> Generator[TreeNodeData, None, None]:
     """Only Yields Directories.
     """
-    for entry in path.glob('*'):
+    for entry in sorted(path.glob('*')):
         if not data.include_hidden and entry.name.startswith('.'):
             continue
         if is_directory := entry.is_dir():
@@ -71,7 +71,7 @@ def _dirs_only_prune(
 ) -> Generator[TreeNodeData, None, None]:
     """Only Yields Directories, after pruning.
     """
-    for entry in path.glob('*'):
+    for entry in sorted(path.glob('*')):
         if not data.include_hidden and entry.name.startswith('.'):
             continue
         if is_directory := entry.is_dir():
