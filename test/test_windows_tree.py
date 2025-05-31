@@ -12,6 +12,7 @@ from treescriptify.windows_tree import win_tree
 DEFAULT_INPUT = InputData()
 EXCLUDE_HIDDEN_INPUT = InputData(include_hidden=False)
 DIR_ONLY_INPUT = InputData(directories_only=True)
+DIR_ONLY_HIDE_INPUT = InputData(directories_only=True, include_hidden=False)
 PRUNE_DIR_INPUT = InputData(prune_dirs=True)
 DIR_ONLY_PRUNE_INPUT = InputData(directories_only=True, prune_dirs=True)
 EXCLUDE_HIDDEN_WITH_DIR_ONLY_PRUNE = InputData(
@@ -168,6 +169,10 @@ def test_win_tree_dir_only_input_hidden_tree_returns_data(mock_hidden_tree):
         TreeNodeData(0, True, '.github'),
         TreeNodeData(1, True, 'workflows'),
     ]
+
+
+def test_win_tree_dir_only_hide_input_hidden_tree_returns_empty(mock_hidden_tree):
+    assert 0 == len(list(win_tree(DIR_ONLY_HIDE_INPUT, mock_hidden_tree)))
 
 
 def test_win_tree_prune_dir_input_basic_tree_returns_data(mock_basic_tree):
