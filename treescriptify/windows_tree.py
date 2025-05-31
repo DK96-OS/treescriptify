@@ -36,7 +36,7 @@ def _gen_tree(
 ) -> Generator[TreeNodeData, None, None]:
     """Mimic the Tree command.
     """
-    for entry in path.iterdir():
+    for entry in path.glob('*'):
         # Check Hidden Files option
         if not data.include_hidden and entry.name.startswith('.'):
             continue
@@ -53,10 +53,10 @@ def _dirs_only(
 ) -> Generator[TreeNodeData, None, None]:
     """Only Yields Directories.
     """
-    for entry in path.iterdir():
+    for entry in path.glob('*'):
         if not data.include_hidden and entry.name.startswith('.'):
             continue
-        if (is_directory := entry.is_dir()):
+        if is_directory := entry.is_dir():
             yield TreeNodeData(depth, is_directory, entry.name)
             yield from _dirs_only(data, entry, depth + 1)
         else:
@@ -71,10 +71,10 @@ def _dirs_only_prune(
 ) -> Generator[TreeNodeData, None, None]:
     """Only Yields Directories, after pruning.
     """
-    for entry in path.iterdir():
+    for entry in path.glob('*'):
         if not data.include_hidden and entry.name.startswith('.'):
             continue
-        if (is_directory := entry.is_dir()):
+        if is_directory := entry.is_dir():
             # Check if directory is empty
             if any(entry.iterdir()):
                 yield TreeNodeData(depth, is_directory, entry.name)
@@ -82,4 +82,3 @@ def _dirs_only_prune(
         else:
             #print(f"Ignoring File {entry.name}")
             pass
-
