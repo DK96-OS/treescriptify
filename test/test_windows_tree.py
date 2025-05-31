@@ -95,9 +95,9 @@ def test_win_tree_default_input_hidden_tree_returns_data(mock_hidden_tree):
     result = [x for x in win_tree(DEFAULT_INPUT, mock_hidden_tree)]
     assert result == [
         TreeNodeData(0, True, '.github'),
+        TreeNodeData(1, False, 'dependabot.yml'),
         TreeNodeData(1, True, 'workflows'),
         TreeNodeData(2, False, 'ci.yml'),
-        TreeNodeData(1, False, 'dependabot.yml'),
         TreeNodeData(0, False, '.hidden.txt'),
     ]
 
@@ -168,9 +168,9 @@ def test_win_tree_prune_dir_input_hidden_tree_returns_data(mock_hidden_tree):
     result = [x for x in win_tree(PRUNE_DIR_INPUT, mock_hidden_tree)]
     assert result == [
         TreeNodeData(0, True, '.github'),
+        TreeNodeData(1, False, 'dependabot.yml'),
         TreeNodeData(1, True, 'workflows'),
         TreeNodeData(2, False, 'ci.yml'),
-        TreeNodeData(1, False, 'dependabot.yml'),
         TreeNodeData(0, False, '.hidden.txt'),
     ]
 
