@@ -19,6 +19,18 @@ def get_tree_json(data: InputData) -> str:
     return result.stdout
 
 
+def is_tree_v2_available() -> bool:
+    """ Returns True if there is a usable version of tree.
+    """
+    result = subprocess.run(
+        args='tree --version ', capture_output=True, text=True, shell=True, timeout=2)
+    output = result.stdout
+    if output is not None:
+        return output.startswith('tree v2')
+    else:
+        return False
+
+
 def _check_arguments(data: InputData) -> str:
     """Check the Input Data and map flags to tree command.
     """
