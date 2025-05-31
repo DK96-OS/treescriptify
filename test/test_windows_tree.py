@@ -1,18 +1,12 @@
 """Testing Windows tree Methods
 """
-import os
 from pathlib import Path
+
 import pytest
 
 from treescriptify.input_data import InputData
 from treescriptify.tree_node_data import TreeNodeData
 from treescriptify.windows_tree import win_tree
-
-
-# File Systems on different Operating Systems behave differently.
-# In test cases with files and dirs at the same level in a tree,
-# the order of the files and dirs is switched.
-IS_WINDOWS = os.name == 'nt'
 
 
 DEFAULT_INPUT = InputData()
@@ -99,23 +93,13 @@ def test_win_tree_default_input_nested_tree_returns_data(mock_nested_tree):
 
 def test_win_tree_default_input_hidden_tree_returns_data(mock_hidden_tree):
     result = [x for x in win_tree(DEFAULT_INPUT, mock_hidden_tree)]
-    if IS_WINDOWS:
-        expected = [
-            TreeNodeData(0, True, '.github'),
-            TreeNodeData(1, False, 'dependabot.yml'),
-            TreeNodeData(1, True, 'workflows'),
-            TreeNodeData(2, False, 'ci.yml'),
-            TreeNodeData(0, False, '.hidden.txt'),
-        ]
-    else:
-        expected = [
-            TreeNodeData(0, True, '.github'),
-            TreeNodeData(1, True, 'workflows'),
-            TreeNodeData(2, False, 'ci.yml'),
-            TreeNodeData(1, False, 'dependabot.yml'),
-            TreeNodeData(0, False, '.hidden.txt'),
-        ]
-    assert result == expected
+    assert result == [
+        TreeNodeData(0, True, '.github'),
+        TreeNodeData(1, True, 'workflows'),
+        TreeNodeData(2, False, 'ci.yml'),
+        TreeNodeData(1, False, 'dependabot.yml'),
+        TreeNodeData(0, False, '.hidden.txt'),
+    ]
 
 
 def test_win_tree_exclude_hidden_input_basic_tree_returns_data(mock_basic_tree):
@@ -182,23 +166,13 @@ def test_win_tree_prune_dir_input_nested_tree_returns_data(mock_nested_tree):
 
 def test_win_tree_prune_dir_input_hidden_tree_returns_data(mock_hidden_tree):
     result = [x for x in win_tree(PRUNE_DIR_INPUT, mock_hidden_tree)]
-    if IS_WINDOWS:
-        expected = [
-            TreeNodeData(0, True, '.github'),
-            TreeNodeData(1, False, 'dependabot.yml'),
-            TreeNodeData(1, True, 'workflows'),
-            TreeNodeData(2, False, 'ci.yml'),
-            TreeNodeData(0, False, '.hidden.txt'),
-        ]
-    else:
-        expected = [
-            TreeNodeData(0, True, '.github'),
-            TreeNodeData(1, True, 'workflows'),
-            TreeNodeData(2, False, 'ci.yml'),
-            TreeNodeData(1, False, 'dependabot.yml'),
-            TreeNodeData(0, False, '.hidden.txt'),
-        ]
-    assert result == expected
+    assert result == [
+        TreeNodeData(0, True, '.github'),
+        TreeNodeData(1, True, 'workflows'),
+        TreeNodeData(2, False, 'ci.yml'),
+        TreeNodeData(1, False, 'dependabot.yml'),
+        TreeNodeData(0, False, '.hidden.txt'),
+    ]
 
 
 def test_win_tree_dir_only_prune_input_basic_tree_returns_data(mock_basic_tree):
