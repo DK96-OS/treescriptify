@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     strategy:
-      max-parallel: 6
+      max-parallel: 8
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -21,6 +21,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
@@ -30,10 +32,10 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest==8.3.4 pytest-cov==5.0.0
+          pip install pytest==8.3.5 pytest-cov==6.1.1
 
       - name: Run unit tests
-        run: pytest test/ --cov --cov-report=html --cov-fail-under=95
+        run: pytest test/ --cov=treescriptify --cov-report=html --cov-fail-under=95
 
       - name: Upload Test Coverage Reports
         uses: actions/upload-artifact@v4
