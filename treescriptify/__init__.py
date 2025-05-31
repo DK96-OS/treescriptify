@@ -10,22 +10,17 @@ from .windows_tree import win_tree
 def tsfy(data: InputData) -> str:
     """Run Treescriptify on the given Inputs.
     """
-    if is_tree_v2_available():
-        return '\n'.join(
-            generate_script(
-                generate_from_json(
-                    get_tree_json(data)
-                )
-            )
+    return '\n'.join(
+        generate_script(
+            generate_from_json(get_tree_json(data))
+            if is_tree_v2_available() else win_tree(data)
         )
-    return tsfy_windows(data)
+    )
 
 
 def tsfy_windows(data: InputData) -> str:
     """Run Treescriptify on the given Inputs, on a Windows OS.
     """
     return '\n'.join(
-        generate_script(
-            win_tree(data)
-        )
+        generate_script(win_tree(data))
     )
