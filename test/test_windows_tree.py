@@ -74,6 +74,18 @@ def mock_hidden_tree(tmp_path):
     return Path(str(tmp_path))
 
 
+@pytest.fixture
+def mock_hidden_tree2(tmp_path):
+    github_dir = tmp_path / '.github'
+    github_dir.mkdir()
+    (github_dir / 'dependabot.yml').touch()
+    workflows_dir = github_dir / 'borkflows'
+    workflows_dir.mkdir()
+    (workflows_dir / 'ci.yml').touch()
+    (tmp_path / '.hidden.txt').touch()
+    return Path(str(tmp_path))
+
+
 def test_win_tree_default_input_basic_tree_returns_data(mock_basic_tree):
     result = [x for x in win_tree(DEFAULT_INPUT, mock_basic_tree)]
     assert result == [
@@ -98,6 +110,17 @@ def test_win_tree_default_input_hidden_tree_returns_data(mock_hidden_tree):
         TreeNodeData(1, False, 'dependabot.yml'),
         TreeNodeData(1, True, 'workflows'),
         TreeNodeData(2, False, 'ci.yml'),
+        TreeNodeData(0, False, '.hidden.txt'),
+    ]
+
+
+def test_win_tree_default_input_hidden_tree2_returns_data(mock_hidden_tree2):
+    result = [x for x in win_tree(DEFAULT_INPUT, mock_hidden_tree2)]
+    assert result == [
+        TreeNodeData(0, True, '.github'),
+        TreeNodeData(1, True, 'borkflows'), # Sorting is alphabetical, not dir/file based
+        TreeNodeData(2, False, 'ci.yml'),
+        TreeNodeData(1, False, 'dependabot.yml'),
         TreeNodeData(0, False, '.hidden.txt'),
     ]
 
