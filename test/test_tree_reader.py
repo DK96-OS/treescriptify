@@ -1,5 +1,7 @@
 """Testing Module Methods
 """
+from itertools import repeat
+
 import pytest
 
 from treescriptify.tree_node_data import TreeNodeData
@@ -10,8 +12,8 @@ def wrap_root_dir(inner_dirs: str) -> str:
 	return '[{"type":"directory", "name":".", "contents":[' + inner_dirs + ']}]'
 
 
-def get_src_dir() -> str:
-	return '{"type":"directory", "name":"src", "contents":[]}'
+def get_src_dir(contents: str = '') -> str:
+	return '{"type":"directory", "name":"src", "contents":[' + contents + ']}'
 
 
 def get_file(name: str) -> str:
@@ -23,9 +25,29 @@ def test_generate_from_json_empty_dir_returns_empty_list():
 	assert list(tree_gen) == []
 
 
+def test_generate_from_json_empty_str_raises_exit():
+	with pytest.raises(SystemExit):
+		list(generate_from_json(''))
+
+
+def test_generate_from_json_non_json_str_raises_exit():
+	with pytest.raises(SystemExit):
+		list(generate_from_json('no'))
+
+
+def test_generate_from_json_double_input_raises_exit():
+	with pytest.raises(SystemExit):
+		list(generate_from_json(str(repeat(get_src_dir(), 2))))
+
+
 def test_generate_from_json_src_dir_returns_tree_node():
 	tree_gen = generate_from_json(wrap_root_dir(get_src_dir()))
 	assert list(tree_gen) == [TreeNodeData(0, True, 'src')]
+
+
+def test_generate_from_json_src_dir_with_file_returns_2_nodes():
+	tree_gen = generate_from_json(wrap_root_dir(get_src_dir(get_file('build.file'))))
+	assert list(tree_gen) == [TreeNodeData(0, True, 'src'), TreeNodeData(1, False, 'build.file')]
 
 
 @pytest.mark.parametrize(
