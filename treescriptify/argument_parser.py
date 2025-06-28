@@ -24,7 +24,7 @@ def _define_arguments() -> ArgumentParser:
     """Create and initialize the ArgumentParser.
     """
     parser = ArgumentParser(
-        description='Treescriptify'
+        description='Treescriptify creates TreeScript from an existing File Tree.'
     )
     parser.add_argument(
         '-a',
