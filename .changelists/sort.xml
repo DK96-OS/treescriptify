@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sorting>
+    <changelist name="TreeScriptify Package" module="module">
+        <files first_dir="treescriptify" />
+    </changelist>
+    <changelist name="Project Root">
+        <files first_dir="None" />
+    </changelist>
+    <changelist name="Tests" module="module">
+        <files first_dir="test" />
+    </changelist>
+    <changelist name="Changelists Config" module="hidden">
+        <files first_dir=".changelists" />
+        <files file_ext="xml" />
+    </changelist>
+</sorting>
