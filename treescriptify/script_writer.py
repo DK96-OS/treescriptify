@@ -2,7 +2,7 @@
 """
 from typing import Generator
 
-from .tree_node_data import TreeNodeData
+from treescriptify.data.tree_node_data import TreeNodeData
 
 
 def generate_script(tree_nodes: Generator[TreeNodeData, None, None]) -> Generator[str, None, None]:

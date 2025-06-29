@@ -1,26 +1,39 @@
-"""TreeScriptify Package
+""" TreeScriptify Package
 """
-from .input_data import InputData
-from .tree_runner import get_tree_json, is_tree_v2_available
-from .tree_reader import generate_from_json
+from typing import Generator
+
+from .data.input_data import InputData
+from .file_tree import generate_tree
 from .script_writer import generate_script
-from .windows_tree import win_tree
 
 
-def tsfy(data: InputData) -> str:
-    """Run Treescriptify on the given Inputs.
+def tsfy(
+    data: InputData,
+) -> str:
+    """ Run Treescriptify with the given Input.
+
+**Parameters:**
+ - data (InputData): The program options and ignore patterns.
+
+**Returns:**
+ str - The total TreeScript output from the operation.
     """
     return '\n'.join(
-        generate_script(
-            generate_from_json(get_tree_json(data))
-            if is_tree_v2_available() else win_tree(data)
-        )
+        generate_treescript(data)
     )
 
 
-def tsfy_windows(data: InputData) -> str:
-    """Run Treescriptify on the given Inputs, on a Windows OS.
+def generate_treescript(
+    data: InputData,
+) -> Generator[str, None, None]:
+    """ Generate lines of TreeScript using the InputData options and ignore patterns.
+
+**Parameters:**
+ - data (InputData): The program options and ignore patterns.
+
+**Yields:**
+ str - Lines of TreeScript.
     """
-    return '\n'.join(
-        generate_script(win_tree(data))
+    yield from generate_script(
+        generate_tree(data)
     )
