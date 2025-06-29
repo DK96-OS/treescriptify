@@ -46,7 +46,7 @@ def _basic_tree(
         #    continue
         if data.ignore_hidden and entry.name.startswith('.'):
             continue
-        is_directory = entry.is_dir(follow_symlinks=False)
+        is_directory = entry.is_dir()
         yield TreeNodeData(depth, is_directory, entry.name)
         if is_directory:
             yield from _basic_tree(data, entry, depth=depth + 1)
@@ -63,7 +63,7 @@ def _dir_only_tree(
     if 0 < data.depth < depth:
         return
     for entry in sorted(path.glob('*')):
-        if is_directory := entry.is_dir(follow_symlinks=False):
+        if is_directory := entry.is_dir():
             #if data.ignore_patterns is not None and _should_ignore_node(data.ignore_patterns, entry):
             #    continue
             if data.ignore_hidden and entry.name.startswith('.'):
@@ -85,7 +85,7 @@ def _nonempty_dir_only_tree(
     if 0 < data.depth < depth:
         return
     for entry in sorted(path.glob('*')):
-        if is_directory := entry.is_dir(follow_symlinks=False):
+        if is_directory := entry.is_dir():
             #if data.ignore_patterns is not None and _should_ignore_node(data.ignore_patterns, entry):
             #    continue
             if data.ignore_hidden and entry.name.startswith('.'):
@@ -111,7 +111,7 @@ def _prune_only_tree(
         #    continue
         if data.ignore_hidden and entry.name.startswith('.'):
             continue
-        if entry.is_dir(follow_symlinks=False):
+        if entry.is_dir():
             if any(entry.glob('*')): # The directory must be non-empty, or ignore it
                 yield TreeNodeData(depth, is_dir=True, name=entry.name)
                 yield from _prune_only_tree(data, entry, depth=depth + 1)
