@@ -12,8 +12,6 @@ def parse_args(arguments: list[str]) -> ArgumentData:
         args = _define_arguments().parse_args(arguments)
     except SystemExit:
         exit("Unable to Parse Arguments.")
-    if not isinstance(args.depth, int):
-        raise TypeError
     if args.depth < 0:
         exit("Invalid Depth Argument.")
     return ArgumentData(
