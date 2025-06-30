@@ -12,8 +12,17 @@ You can manually install a release (if you want), or use pip.
 
 `pip install treescriptify`
 
-## Program Architecture
-The following diagram shows how the program components work together to process the data.
-![tsfy](https://github.com/DK96-OS/tsfy/assets/69859316/84f127f0-cf19-418b-be78-572fbb96868c)
+## Command Line Options
 
-Note: All source modules are contained in the treescriptify package. The input package is merely symbolic in this diagram.
+1. Hidden Files and Directories
+   - `-a` or `--hide`
+   - Either argument will hide.
+2. Directories Only
+   - `-d` or `--directories`
+3. Prune Empty Directories
+   - `-p` or `--prune`
+4. Gitignore Patterns
+   - `--gitignore` or `--no-gitignore`
+   - Either argument disables Gitignore, which is on by default.
+5. Tree Depth
+   - The maximum number of parent directories in the tree.
