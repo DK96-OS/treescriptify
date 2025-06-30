@@ -20,12 +20,13 @@
         <files first_dir="test" />
         <files path_end="input" />
     </changelist>
-    <changelist name="TreeScriptify Package Tests" module="module">
-        <files path_start="test/treescriptify/" />
-    </changelist>
     <changelist name="Test Fixtures and Data Providers" module="module">
+        <files first_dir="test" />
         <files filename_prefix="conftest" />
         <files file_ext="py" />
+    </changelist>
+    <changelist name="TreeScriptify Package Tests" module="module">
+        <files path_start="test/treescriptify/" />
     </changelist>
     <changelist name="Changelists Config" module="hidden">
         <files first_dir=".changelists" />
