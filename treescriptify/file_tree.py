@@ -1,7 +1,6 @@
 """ Python implementation of Tree.
 """
 from pathlib import Path
-from re import Pattern
 from typing import Generator
 
 from treescriptify.data.input_data import InputData
@@ -56,7 +55,6 @@ def _dir_only_tree(
     data: InputData,
     path: Path,
     depth: int = 0,
-    debug: bool = False,
 ) -> Generator[TreeNodeData, None, None]:
     """ Only Yields Directories.
     """
@@ -70,15 +68,12 @@ def _dir_only_tree(
                 continue
             yield TreeNodeData(depth, is_directory, entry.name)
             yield from _dir_only_tree(data, entry, depth=depth + 1)
-        elif debug:
-            print(f"Ignoring File {entry.name}")
 
 
 def _nonempty_dir_only_tree(
     data: InputData,
     path: Path,
     depth: int = 0,
-    debug: bool = False,
 ) -> Generator[TreeNodeData, None, None]:
     """ Only Yields Non-Empty Directories.
     """
@@ -93,8 +88,6 @@ def _nonempty_dir_only_tree(
             if any(entry.glob('*')): # Only if directory is non-empty
                 yield TreeNodeData(depth, is_directory, entry.name)
                 yield from _nonempty_dir_only_tree(data, entry, depth=depth + 1)
-        elif debug:
-            print(f"Ignoring File {entry.name}")
 
 
 def _prune_only_tree(
@@ -117,13 +110,3 @@ def _prune_only_tree(
                 yield from _prune_only_tree(data, entry, depth=depth + 1)
         else:
             yield TreeNodeData(depth, is_dir=False, name=entry.name)
-
-
-def _should_ignore_node(
-    ignore_patterns: list[Pattern],
-    tree_node_path: Path,
-) -> bool:
-    for ip in ignore_patterns:
-        if ip.match(str(tree_node_path)):
-            return True
-    return False
