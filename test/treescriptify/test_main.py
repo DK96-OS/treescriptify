@@ -44,6 +44,59 @@ def test_main_default_nested_tree(monkeypatch, mock_nested_tree):
     collector.assert_expected(expected)
 
 
+def test_main_default_empty_dirs_tree_(monkeypatch, mock_empty_dirs_tree):
+    sys.argv = ['treescriptify']
+    os.chdir(mock_empty_dirs_tree)
+    expected = """empty_dirs/
+  dir1/
+  dir2/
+  dir3/
+"""
+    collector, mock_print = setup_mock_print_collector()
+    monkeypatch.setattr(builtins, 'print', mock_print)
+    main()
+    collector.assert_expected(expected)
+
+
+def test_main_a_empty_dirs_tree_(monkeypatch, mock_empty_dirs_tree):
+    sys.argv = ['treescriptify', '-a']
+    os.chdir(mock_empty_dirs_tree)
+    expected = """empty_dirs/
+  dir1/
+  dir2/
+  dir3/
+"""
+    collector, mock_print = setup_mock_print_collector()
+    monkeypatch.setattr(builtins, 'print', mock_print)
+    main()
+    collector.assert_expected(expected)
+
+
+def test_main_d_empty_dirs_tree_(monkeypatch, mock_empty_dirs_tree):
+    sys.argv = ['treescriptify', '-d']
+    os.chdir(mock_empty_dirs_tree)
+    expected = """empty_dirs/
+  dir1/
+  dir2/
+  dir3/
+"""
+    collector, mock_print = setup_mock_print_collector()
+    monkeypatch.setattr(builtins, 'print', mock_print)
+    main()
+    collector.assert_expected(expected)
+
+
+def test_main_p_empty_dirs_tree_(monkeypatch, mock_empty_dirs_tree):
+    sys.argv = ['treescriptify', '-p']
+    os.chdir(mock_empty_dirs_tree)
+    expected = """empty_dirs/
+"""
+    collector, mock_print = setup_mock_print_collector()
+    monkeypatch.setattr(builtins, 'print', mock_print)
+    main()
+    collector.assert_expected(expected)
+
+
 def test_main_a_hidden_tree_(monkeypatch, mock_hidden_tree):
     sys.argv = ['treescriptify', '-a']
     os.chdir(mock_hidden_tree)
