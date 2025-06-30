@@ -69,5 +69,5 @@ __pycache__/
     (example_dir / '__init__.py').touch()
     (example_dir / '__main__.py').touch()
     (example_dir / 'example_module.py').touch()
-    (ftb_dir := tmp_path / '.ftb').mkdir()
+    (tmp_path / '.ftb').mkdir()
     return Path(str(tmp_path))
