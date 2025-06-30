@@ -7,7 +7,7 @@ from .file_tree import generate_tree
 from .script_writer import generate_script
 
 
-def tsfy(
+def treescriptify(
     data: InputData,
 ) -> str:
     """ Run Treescriptify with the given Input.
@@ -18,9 +18,12 @@ def tsfy(
 **Returns:**
  str - The total TreeScript output from the operation.
     """
-    return '\n'.join(
+    treescript = '\n'.join(
         generate_treescript(data)
     )
+    if len(treescript) > 0:
+        treescript += '\n'
+    return treescript
 
 
 def generate_treescript(
