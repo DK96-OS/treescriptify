@@ -21,3 +21,15 @@ class InputData:
     prune_dirs: bool = False
     depth: int = 0
     #ignore_patterns: list[Pattern] | None = None
+
+    def is_depth_exceeded(self, depth: int) -> bool:
+        """ Determine whether the depth has been exceeded.
+ - When depth is zero (default), this method returns false.
+
+**Parameters:**
+ - depth (int): The tree depth to check against the set limit.
+
+**Returns:**
+ bool - True if the given depth exceeds the InputData limit.
+        """
+        return 0 < self.depth <= depth - 1
