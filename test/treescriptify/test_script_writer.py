@@ -3,7 +3,7 @@
 import pytest
 
 from treescriptify.script_writer import generate_script
-from treescriptify.tree_node_data import TreeNodeData
+from treescriptify.data.tree_node_data import TreeNodeData
 
 
 def generator_single_dir_node(name: str, depth: int=0):
