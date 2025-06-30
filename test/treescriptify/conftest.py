@@ -15,9 +15,7 @@ EXCLUDE_HIDDEN_WITH_DIR_ONLY_PRUNE = InputData(
 )
 DEPTH_1_INPUT = InputData(depth=1,)
 DEPTH_2_INPUT = InputData(depth=2,)
-
-DEPTH_1_PRUNE_DIR_INPUT = InputData(depth=1,prune_dirs=True)
-DEPTH_2_PRUNE_DIR_INPUT = InputData(depth=2,prune_dirs=True)
-
 DEPTH_1_DIR_ONLY_INPUT = InputData(depth=1,directories_only=True)
 DEPTH_2_DIR_ONLY_INPUT = InputData(depth=2,directories_only=True)
+DEPTH_1_PRUNE_DIR_INPUT = InputData(depth=1,prune_dirs=True)
+DEPTH_2_PRUNE_DIR_INPUT = InputData(depth=2,prune_dirs=True)
