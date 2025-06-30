@@ -38,7 +38,7 @@ def _basic_tree(
 ) -> Generator[TreeNodeData, None, None]:
     """ Simply Files and Directories.
     """
-    if 0 < data.depth <= depth - 1:
+    if data.is_depth_exceeded(depth):
         return
     for entry in sorted(path.glob('*')):
         #if data.ignore_patterns is not None and _should_ignore_node(data.ignore_patterns, entry):
@@ -58,7 +58,7 @@ def _dir_only_tree(
 ) -> Generator[TreeNodeData, None, None]:
     """ Only Yields Directories.
     """
-    if 0 < data.depth < depth:
+    if data.is_depth_exceeded(depth):
         return
     for entry in sorted(path.glob('*')):
         if is_directory := entry.is_dir():
@@ -77,7 +77,7 @@ def _nonempty_dir_only_tree(
 ) -> Generator[TreeNodeData, None, None]:
     """ Only Yields Non-Empty Directories.
     """
-    if 0 < data.depth < depth:
+    if data.is_depth_exceeded(depth):
         return
     for entry in sorted(path.glob('*')):
         if is_directory := entry.is_dir():
@@ -97,7 +97,7 @@ def _prune_only_tree(
 ) -> Generator[TreeNodeData, None, None]:
     """ Yields Files and Non-Empty Directories.
     """
-    if 0 < data.depth < depth:
+    if data.is_depth_exceeded(depth):
         return
     for entry in sorted(path.glob('*')):
         #if data.ignore_patterns is not None and _should_ignore_node(data.ignore_patterns, entry):
