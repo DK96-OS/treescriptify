@@ -1,9 +1,8 @@
 """
 """
-import tempfile
+from pathlib import Path
 
 import pytest
-from pathlib import Path
 
 
 @pytest.fixture
@@ -45,4 +44,21 @@ def mock_hidden_tree2(tmp_path):
     workflows_dir.mkdir()
     (workflows_dir / 'ci.yml').touch()
     (tmp_path / '.hidden.txt').touch()
+    return Path(str(tmp_path))
+
+
+@pytest.fixture
+def mock_gitignore_tree(tmp_path: Path) -> Path:
+    gitignore_file = tmp_path / '.gitignore'
+    gitignore_file.touch()
+    gitignore_file.write_text("""# Basic Gitignore Patterns:
+.ftb/
+__**__.py
+__pycache__/
+""")
+    (example_dir := tmp_path / 'example').mkdir()
+    (example_dir / '__init__.py').touch()
+    (example_dir / '__main__.py').touch()
+    (example_dir / 'example_module.py').touch()
+    (ftb_dir := tmp_path / '.ftb').mkdir()
     return Path(str(tmp_path))
