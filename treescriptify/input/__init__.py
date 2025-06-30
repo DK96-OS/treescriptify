@@ -17,7 +17,7 @@ def validate_arguments(arguments: list[str]) -> InputData:
     arg_data = parse_args(arguments)
     #ignore_patterns = load_gitignore_patterns() if arg_data.git_ignore else []
     return InputData(
-        ignore_hidden=arg_data.include_hidden,
+        ignore_hidden=not arg_data.include_hidden,
         directories_only=arg_data.directories_only,
         prune_dirs=arg_data.prune_dirs,
         depth=arg_data.depth,
