@@ -1,7 +1,5 @@
 """ Testing Windows tree Methods
 """
-import pytest
-
 from treescriptify import generate_tree
 from treescriptify.data.tree_node_data import TreeNodeData
 
