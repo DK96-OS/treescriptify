@@ -24,6 +24,15 @@ def mock_nested_tree(tmp_path):
 
 
 @pytest.fixture
+def mock_empty_dirs_tree(tmp_path):
+    my_dirs = tmp_path / 'empty_dirs/'
+    my_dirs.mkdir()
+    for n in range(1, 4): # Create Numbered Empty Dirs
+        (my_dirs / f'dir{n}').mkdir()
+    return Path(str(tmp_path))
+
+
+@pytest.fixture
 def mock_hidden_tree(tmp_path):
     github_dir = tmp_path / '.github'
     github_dir.mkdir()
