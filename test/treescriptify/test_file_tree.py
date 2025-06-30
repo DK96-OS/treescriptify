@@ -5,7 +5,7 @@ import pytest
 from treescriptify import generate_tree
 from treescriptify.data.tree_node_data import TreeNodeData
 
-from test.treescriptify.conftest import *
+from test.treescriptify.conftest import DEFAULT_INPUT, EXCLUDE_HIDDEN_INPUT, DIR_ONLY_INPUT, DIR_ONLY_HIDE_INPUT, PRUNE_DIR_INPUT, DIR_ONLY_PRUNE_INPUT, EXCLUDE_HIDDEN_WITH_DIR_ONLY_PRUNE, DEPTH_1_INPUT, DEPTH_2_INPUT
 
 
 # BASIC_TREE
