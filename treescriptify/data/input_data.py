@@ -32,4 +32,4 @@ class InputData:
 **Returns:**
  bool - True if the given depth exceeds the InputData limit.
         """
-        return 0 < self.depth <= depth - 1
+        return 0 < self.depth <= depth

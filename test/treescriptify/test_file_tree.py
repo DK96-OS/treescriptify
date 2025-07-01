@@ -181,7 +181,6 @@ def test_tree_depth_1_input_basic_tree_returns_data(mock_basic_tree):
     result = [x for x in generate_tree(DEPTH_1_INPUT, mock_basic_tree)]
     assert result == [
         TreeNodeData(0, True, 'src'),
-        TreeNodeData(1, False, 'data.txt'),
     ]
 
 
@@ -189,7 +188,6 @@ def test_tree_depth_1_input_nested_tree_returns_data(mock_nested_tree):
     result = [x for x in generate_tree(DEPTH_1_INPUT, mock_nested_tree)]
     assert result == [
         TreeNodeData(0, True, 'src'),
-        TreeNodeData(1, True, 'main'), # Does not open this dir
     ]
 
 
@@ -197,9 +195,6 @@ def test_tree_depth_1_input_hidden_tree_returns_data(mock_hidden_tree):
     result = [x for x in generate_tree(DEPTH_1_INPUT, mock_hidden_tree)]
     assert result == [
         TreeNodeData(0, True, '.github'),
-        TreeNodeData(1, False, 'dependabot.yml'),
-        TreeNodeData(1, True, 'workflows'),
-        #TreeNodeData(2, False, 'ci.yml'),
         TreeNodeData(0, False, '.hidden.txt'),
     ]
 
@@ -208,9 +203,6 @@ def test_tree_depth_1_input_hidden_tree2_returns_data(mock_hidden_tree2):
     result = [x for x in generate_tree(DEPTH_1_INPUT, mock_hidden_tree2)]
     assert result == [
         TreeNodeData(0, True, '.github'),
-        TreeNodeData(1, True, 'borkflows'), # Sorting is alphabetical, not dir/file based
-        #TreeNodeData(2, False, 'ci.yml'),
-        TreeNodeData(1, False, 'dependabot.yml'),
         TreeNodeData(0, False, '.hidden.txt'),
     ]
 
@@ -228,7 +220,6 @@ def test_tree_depth_2_input_nested_tree_returns_data(mock_nested_tree):
     assert result == [
         TreeNodeData(0, True, 'src'),
         TreeNodeData(1, True, 'main'),
-        TreeNodeData(2, False, 'SourceClass.java'),
     ]
 
 
@@ -238,7 +229,6 @@ def test_tree_depth_2_input_hidden_tree_returns_data(mock_hidden_tree):
         TreeNodeData(0, True, '.github'),
         TreeNodeData(1, False, 'dependabot.yml'),
         TreeNodeData(1, True, 'workflows'),
-        TreeNodeData(2, False, 'ci.yml'),
         TreeNodeData(0, False, '.hidden.txt'),
     ]
 
@@ -248,7 +238,6 @@ def test_tree_depth_2_input_hidden_tree2_returns_data(mock_hidden_tree2):
     assert result == [
         TreeNodeData(0, True, '.github'),
         TreeNodeData(1, True, 'borkflows'), # Sorting is alphabetical, not dir/file based
-        TreeNodeData(2, False, 'ci.yml'),
         TreeNodeData(1, False, 'dependabot.yml'),
         TreeNodeData(0, False, '.hidden.txt'),
     ]
@@ -258,9 +247,6 @@ def test_tree_depth_1_dir_only_input_empty_dirs_tree_returns_data(mock_empty_dir
     result = [x for x in generate_tree(DEPTH_1_DIR_ONLY_INPUT, mock_empty_dirs_tree)]
     assert result == [
         TreeNodeData(0, True, 'empty_dirs'),
-        TreeNodeData(1, True, 'dir1'),
-        TreeNodeData(1, True, 'dir2'),
-        TreeNodeData(1, True, 'dir3'),
     ]
 
 
@@ -292,7 +278,6 @@ def test_tree_depth_1_dir_only_input_hidden_tree2_returns_data(mock_hidden_tree2
     result = [x for x in generate_tree(DEPTH_1_DIR_ONLY_INPUT, mock_hidden_tree2)]
     assert result == [
         TreeNodeData(0, True, '.github'),
-        TreeNodeData(1, True, 'borkflows'),
     ]
 
 
