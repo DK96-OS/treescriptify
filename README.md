@@ -21,8 +21,11 @@ You can manually install a release (if you want), or use pip.
    - `-d` or `--directories`
 3. Prune Empty Directories
    - `-p` or `--prune`
-4. Gitignore Patterns
-   - `--gitignore` or `--no-gitignore`
-   - Either argument disables Gitignore, which is on by default.
 5. Tree Depth
    - The maximum number of parent directories in the tree.
+
+## Features In Progress
+
+- Gitignore Patterns
+   - `--gitignore` or `--no-gitignore`
+   - Either argument disables Gitignore, which is on by default.
