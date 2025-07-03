@@ -23,6 +23,9 @@ You can manually install a release (if you want), or use pip.
    - `-p` or `--prune`
 5. Tree Depth
    - The maximum number of parent directories in the tree.
+5. Number Labels
+   - `-n` or `--number-labels`
+   - Insert Line Number DataLabels into TreeScript output.
 
 ## Features In Progress
 
