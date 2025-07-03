@@ -58,6 +58,21 @@ def test_main_default_empty_dirs_tree_(monkeypatch, mock_empty_dirs_tree):
     collector.assert_expected(expected)
 
 
+def test_main_default_hidden_tree_(monkeypatch, mock_hidden_tree):
+    sys.argv = ['treescriptify']
+    os.chdir(mock_hidden_tree)
+    expected = """.github/
+  dependabot.yml
+  workflows/
+    ci.yml
+.hidden.txt
+"""
+    collector, mock_print = setup_mock_print_collector()
+    monkeypatch.setattr(builtins, 'print', mock_print)
+    main()
+    collector.assert_expected(expected)
+
+
 def test_main_a_empty_dirs_tree_(monkeypatch, mock_empty_dirs_tree):
     sys.argv = ['treescriptify', '-a']
     os.chdir(mock_empty_dirs_tree)
@@ -112,6 +127,21 @@ def test_main_d_hidden_tree_(monkeypatch, mock_hidden_tree):
     os.chdir(mock_hidden_tree)
     expected = """.github/
   workflows/
+"""
+    collector, mock_print = setup_mock_print_collector()
+    monkeypatch.setattr(builtins, 'print', mock_print)
+    main()
+    collector.assert_expected(expected)
+
+
+def test_main_n_hidden_tree_(monkeypatch, mock_hidden_tree):
+    sys.argv = ['treescriptify', '-n']
+    os.chdir(mock_hidden_tree)
+    expected = """.github/
+  dependabot.yml n2
+  workflows/
+    ci.yml n4
+.hidden.txt n5
 """
     collector, mock_print = setup_mock_print_collector()
     monkeypatch.setattr(builtins, 'print', mock_print)
