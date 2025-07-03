@@ -19,6 +19,7 @@ def test_validate_arguments_empty_dir(tmp_path: Path):
     assert not result.directories_only
     assert not result.prune_dirs
     assert result.depth == 0
+    assert not result.number_labels
 
 
 def test_validate_arguments_basic_tree(mock_basic_tree: Path):
@@ -33,6 +34,7 @@ def test_validate_arguments_basic_tree(mock_basic_tree: Path):
     assert not result.directories_only
     assert not result.prune_dirs
     assert result.depth == 0
+    assert not result.number_labels
 
 
 def test_validate_arguments_nested_tree_depth1(mock_nested_tree: Path):
@@ -47,6 +49,7 @@ def test_validate_arguments_nested_tree_depth1(mock_nested_tree: Path):
     assert not result.directories_only
     assert not result.prune_dirs
     assert result.depth == 1
+    assert not result.number_labels
 
 
 def test_validate_arguments_nested_tree_dirs_only(mock_nested_tree: Path):
@@ -61,6 +64,7 @@ def test_validate_arguments_nested_tree_dirs_only(mock_nested_tree: Path):
     assert result.directories_only
     assert not result.prune_dirs
     assert result.depth == 0
+    assert not result.number_labels
 
 
 def test_validate_arguments_hidden_tree_hide(mock_hidden_tree: Path):
@@ -75,3 +79,19 @@ def test_validate_arguments_hidden_tree_hide(mock_hidden_tree: Path):
     assert not result.directories_only
     assert not result.prune_dirs
     assert result.depth == 0
+    assert not result.number_labels
+
+
+def test_validate_arguments_hidden_tree_number_labels(mock_hidden_tree: Path):
+    initial_dir = os.getcwd()
+    os.chdir(mock_hidden_tree)
+    #
+    result = validate_arguments(['--number-labels'])
+    # Returns to initial directory
+    os.chdir(initial_dir)
+    #
+    assert not result.ignore_hidden
+    assert not result.directories_only
+    assert not result.prune_dirs
+    assert result.depth == 0
+    assert result.number_labels

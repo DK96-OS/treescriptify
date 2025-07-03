@@ -20,6 +20,8 @@ from treescriptify.input.argument_parser import parse_args
         (['-adp'], ArgumentData(include_hidden=False, directories_only=True, prune_dirs=True)),
         (['--depth', '1'], ArgumentData(depth=1)),
         (['--depth', '4'], ArgumentData(depth=4)),
+        (['-n'], ArgumentData(number_labels=True)),
+        (['--number-labels'], ArgumentData(number_labels=True)),
     ]
 )
 def test_parse_args_returns_input(test_input, expected):
