@@ -21,5 +21,6 @@ def validate_arguments(arguments: list[str]) -> InputData:
         directories_only=arg_data.directories_only,
         prune_dirs=arg_data.prune_dirs,
         depth=arg_data.depth,
+        number_labels=arg_data.number_labels,
         #ignore_patterns=ignore_patterns if len(ignore_patterns) > 0 else None
     )

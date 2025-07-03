@@ -20,6 +20,7 @@ def parse_args(arguments: list[str]) -> ArgumentData:
         git_ignore=args.gitignore,
         prune_dirs=args.prune,
         depth=args.depth,
+        number_labels=args.number_labels,
     )
 
 
@@ -53,12 +54,19 @@ def _define_arguments() -> ArgumentParser:
         '--prune', '-p',
         action='store_true',
         default=False,
-        help='Only Non-Empty Directories in TreeScript output. Default: False. This may be applied with or without Depth argument.'
+        help='Only Non-Empty Directories in TreeScript output. Default: False.'
     )
     parser.add_argument(
         "--depth",
         type=int,
         default=0,
         help="The depth in the tree to stop recursion at. The number of parent Directories in the path. Directories with larger depth are not traversed, only displayed in the TreeScript output.",
+    )
+    parser.add_argument(
+        '-n',
+        '--number-labels',
+        action='store_true',
+        default=False,
+        help='Add Line Number DataLabels to TreeScript output. Default: False.'
     )
     return parser

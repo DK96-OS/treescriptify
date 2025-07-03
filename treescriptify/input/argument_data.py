@@ -13,9 +13,12 @@ class ArgumentData:
  - directories_only (bool): Filter out all files. Default: False.
  - git_ignore (bool): Whether to Load gitignore Patterns. Default: True.
  - prune_dirs (bool): Filter out empty directories. Default: False.
+ - depth (int): The maximum depth in the TreeScript. Default: 0.
+ - number_labels (bool): Create DataLabels with Line Numbers. Default: False.
     """
     include_hidden: bool = True
     directories_only: bool = False
     git_ignore: bool = True
     prune_dirs: bool = False
     depth: int = 0
+    number_labels: bool = False

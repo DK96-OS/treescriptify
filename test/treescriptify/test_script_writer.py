@@ -1,4 +1,4 @@
-"""Testing Module Methods
+""" Testing Module Methods
 """
 import pytest
 
@@ -32,4 +32,19 @@ def generator_depth_1():
 )
 def test_generate_script_returns_str(test_input, expected):
 	script_gen = generate_script(test_input)
+	assert "\n".join(script_gen) == expected
+
+
+@pytest.mark.parametrize(
+    'test_input,expected',
+    [
+        (generator_single_dir_node('.directory'), '.directory/'),
+        (generator_single_dir_node('.directory', 1), '  .directory/'),
+        (generator_single_file_node('file.txt'), 'file.txt n1'),
+        (generator_single_file_node('file.txt', 1), '  file.txt n1'),
+		(generator_depth_1(), 'module/\n  file.txt n2\n  src/')
+    ]
+)
+def test_generate_script_number_labels_returns_str(test_input, expected):
+	script_gen = generate_script(test_input, number_labels=True)
 	assert "\n".join(script_gen) == expected
