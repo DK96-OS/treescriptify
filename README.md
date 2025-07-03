@@ -21,7 +21,8 @@ You can manually install a release (if you want), or use pip.
    - `-d` or `--directories`
 3. Prune Empty Directories
    - `-p` or `--prune`
-5. Tree Depth
+4. Tree Depth
+   - Example: `--depth 4`
    - The maximum number of parent directories in the tree.
 5. Number Labels
    - `-n` or `--number-labels`
