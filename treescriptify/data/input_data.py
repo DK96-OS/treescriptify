@@ -13,6 +13,7 @@ class InputData:
  - directories_only (bool): Filter out all files. Default: False.
  - prune_dirs (bool): Filter out empty directories. Default: False.
  - depth (int): The maximum depth of directories to traverse. Default: 0. Zero is unlimited.
+ - number_labels (bool): Add Line Number DataLabel to TreeScript Files.
  # Not-Yet Implemented:
  - ignore_patterns (list[Pattern]?): The patterns that will filter TreeScript output. Default: None. Contains Gitignore Regex patterns. Should be None instead of Empty list.
     """
@@ -20,6 +21,7 @@ class InputData:
     directories_only: bool = False
     prune_dirs: bool = False
     depth: int = 0
+    number_labels: bool = False
     #ignore_patterns: list[Pattern] | None = None
 
     def is_depth_exceeded(self, depth: int) -> bool:
