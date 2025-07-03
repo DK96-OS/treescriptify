@@ -38,5 +38,6 @@ def generate_treescript(
  str - Lines of TreeScript.
     """
     yield from generate_script(
-        generate_tree(data)
+        generate_tree(data),
+        number_labels=data.number_labels,
     )
