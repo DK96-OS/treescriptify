@@ -9,8 +9,8 @@
     <changelist name="TreeScriptify Package" module="module">
         <files first_dir="treescriptify" />
     </changelist>
-    <changelist name="Project Root">
-        <files first_dir="None" />
+     <changelist name="Root Project Python Files" module="root">
+        <files file_ext="py" />
     </changelist>
     <changelist name="Data Package Tests" module="module">
         <files first_dir="test" />
@@ -31,5 +31,20 @@
     <changelist name="Changelists Config" module="hidden">
         <files first_dir=".changelists" />
         <files file_ext="xml" />
+    </changelist>
+    
+    <changelist name="GitHub Workflows" module="hidden">
+        <files first_dir=".github" />
+        <files path_end="workflows" />
+        <files file_ext="yml" />
+    </changelist>
+    <changelist name="GitHub Dependabot" module="hidden">
+        <files first_dir=".github" />
+        <files filename_prefix="dependabot" />
+        <files file_ext="yml" />
+    </changelist>
+    
+    <changelist name="Project Root">
+        <files first_dir="None" />
     </changelist>
 </sorting>
